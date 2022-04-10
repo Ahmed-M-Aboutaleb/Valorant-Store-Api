@@ -7,12 +7,19 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+var origin = 'https://valorant-store.xyz';
+var corsOptions = {
+    origin: [origin],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 
 const loginRouter = require('./routers/login');
 
 app.use(helmet());
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(morgan('combined'));
 app.use('/login', loginRouter);
 

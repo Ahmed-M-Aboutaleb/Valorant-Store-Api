@@ -12,8 +12,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    const region = req.body.region;
-    if (username && password && region) {
+    if (username && password) {
         const [session, sessionError] = await CreateLoginSession();
         if (sessionError) {
             console.error(sessionError);
@@ -94,7 +93,7 @@ router.post('/', async (req, res) => {
             },
         });
     } else {
-        res.status(400).send({
+        res.status(401).send({
             success: false,
             message: 'Fill the requird inputs',
         });
