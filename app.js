@@ -8,10 +8,13 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const loginRouter = require('./routers/login');
+
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('combined'));
+app.use('/login', loginRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');

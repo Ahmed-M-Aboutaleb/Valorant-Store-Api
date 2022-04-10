@@ -1,4 +1,5 @@
 const axios = require('axios');
+const https = require('https');
 
 const baseUrl = 'https://auth.riotgames.com';
 const entitlementsUrl = 'https://entitlements.auth.riotgames.com';
@@ -39,6 +40,35 @@ const Login = async (username, password, cookies) => {
                 type: 'auth',
                 username: username,
                 password: password,
+            },
+            {
+                headers: {
+                    Cookie: cookies,
+                    headers: {
+                        'User-Agent':
+                            'RiotClient/43.0.1.4195386.4190634 rso-auth (Windows;10;;Professional, x64)',
+                    },
+                },
+                httpsAgent: new https.Agent({
+                    ciphers:
+                        'TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384',
+                }),
+            }
+        );
+
+        return [response, null];
+    } catch (e) {
+        return [null, e];
+    }
+};
+
+const multiFactor = async (code, cookies) => {
+    try {
+        const response = await axios.put(
+            `${baseUrl}/api/v1/authorization`,
+            {
+                type: 'multifactor',
+                code: code,
             },
             {
                 headers: {
@@ -136,4 +166,14 @@ const getSkinDetails = async (skinsParam) => {
         );
         skins.push(skin);
     }
+};
+module.exports = {
+    CreateLoginSession,
+    Login,
+    multiFactor,
+    FilterAccessToken,
+    FetchEntitlementToken,
+    FetchPlayerID,
+    GetPlayerStorefront,
+    getSkinDetails,
 };
