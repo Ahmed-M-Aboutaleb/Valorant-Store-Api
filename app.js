@@ -27,7 +27,11 @@ const apiRequestLimiter = rateLimit({
         });
     },
     skip: (req, res) => {
-        if (req.ip == '76.76.21.21') {
+        if (
+            req.ip == '76.76.21.21' ||
+            req.ip == '76.223.127.72' ||
+            req.ip == '76.223.126.116'
+        ) {
             return true;
         }
         return false;
@@ -46,7 +50,7 @@ app.use('/login', loginRouter);
 app.use('/store', storeRouter);
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Running Like Arabian horse 🐎');
 });
 
 app.listen(PORT, () => {
