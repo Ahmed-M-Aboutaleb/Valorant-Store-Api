@@ -12,6 +12,7 @@ const dev = false;
 const origin = dev
     ? ['https://www.valorant-store.xyz', 'http://localhost:3000']
     : ['https://www.valorant-store.xyz'];
+const allowlist = ['76.223.127.72', '76.223.126.116', '76.76.21.21'];
 const corsOptions = {
     origin: origin,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -26,22 +27,13 @@ const apiRequestLimiter = rateLimit({
             error: 'You sent too many requests. Please wait a while then try again',
         });
     },
-    skip: (req, res) => {
-        if (
-            req.ip == '76.76.21.21' ||
-            req.ip == '76.223.127.72' ||
-            req.ip == '76.223.126.116'
-        ) {
-            return true;
-        }
-        return false;
-    },
+    skip: (request, response) => allowlist.includes(request.ip),
 });
 
 const loginRouter = require('./routers/login');
 const storeRouter = require('./routers/store');
 
-app.use(apiRequestLimiter);
+//app.use(apiRequestLimiter);
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
