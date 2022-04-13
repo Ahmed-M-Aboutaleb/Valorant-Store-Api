@@ -164,8 +164,9 @@ const getSkinDetails = async (skinsParam) => {
         const skin = await axios.get(
             `https://valorant-api.com/v1/weapons/skinlevels/${skinId}`
         );
-        skins.push(skin);
+        skins.push(skin.data.data);
     }
+    return skins;
 };
 module.exports = {
     CreateLoginSession,
