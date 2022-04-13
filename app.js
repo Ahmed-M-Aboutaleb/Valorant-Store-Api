@@ -26,6 +26,15 @@ const apiRequestLimiter = rateLimit({
             error: 'You sent too many requests. Please wait a while then try again',
         });
     },
+    skip: (req, res) => {
+        if (
+            req.get('host') === 'https://valorant-store.xyz' ||
+            req.get('host') === 'https://www.valorant-store.xyz'
+        ) {
+            return true;
+        }
+        return false;
+    },
 });
 
 const loginRouter = require('./routers/login');
