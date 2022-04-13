@@ -27,10 +27,7 @@ const apiRequestLimiter = rateLimit({
         });
     },
     skip: (req, res) => {
-        if (
-            req.get('host') === 'https://valorant-store.xyz' ||
-            req.get('host') === 'https://www.valorant-store.xyz'
-        ) {
+        if (req.ip == '76.76.21.21') {
             return true;
         }
         return false;
